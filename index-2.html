@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/Cookies-css.css" rel="stylesheet" type="text/css" />
+    <style>
+      /* Add your additional styles here */
+    </style>
+  </head>
+
+  <body>
+    <div id="alertCookiePolicy" style="display: none">
+      <div class="fixed bottom-0 end-1 z-50 sm:max-w-xl w-full mx-auto p-6">
+        <div
+          class="p-4 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700"
+        >
+          <div
+            class="grid sm:flex sm:items-center gap-y-3 sm:gap-y-0 sm:gap-x-5"
+            style="width: auto; height: auto"
+          >
+            <div class="sm:max-w-sm">
+              <h2 class="text-gray-500">
+                <span class="font-semibold text-gray-800 dark:text-gray-200"
+                  >We use cookies</span
+                >
+                to analyze our traffic and create a smooth user experience.
+              </h2>
+            </div>
+            <div class="inline-flex gap-x-2">
+              <div>
+                <button
+                  id="btnDeclineCookiePolicy"
+                  aria-label="Close"
+                  type="button"
+                  class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-sky-600 transition-all text-sm dark:bg-gray-800 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
+                >
+                  Reject
+                </button>
+              </div>
+              <div>
+                <button
+                  id="btnAcceptCookiePolicy"
+                  type="button"
+                  aria-label="Close"
+                  class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-sky-500 text-white hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+                >
+                  Accept
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function cookiesPolicyPrompt() {
+        const cookieName = "AcceptedCookiesPolicy";
+        const alertCookiePolicy = document.getElementById("alertCookiePolicy");
+
+        if (getCookie(cookieName) !== "yes" && getCookie(cookieName) !== "no") {
+          alertCookiePolicy.style.display = "block";
+        }
+
+        document
+          .getElementById("btnAcceptCookiePolicy")
+          .addEventListener("click", function () {
+            setCookie(cookieName, "yes", 30);
+            alertCookiePolicy.style.display = "none";
+          });
+
+        document
+          .getElementById("btnDeclineCookiePolicy")
+          .addEventListener("click", function () {
+            setCookie(cookieName, "no", 30);
+            alertCookiePolicy.style.display = "none";
+          });
+
+        // Check if user declined cookies before and hide the popup
+        if (getCookie(cookieName) === "no") {
+          alertCookiePolicy.style.display = "none";
+        }
+      }
+
+      function setCookie(name, value, days) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+        document.cookie =
+          name + "=" + value + ";expires=" + expires.toUTCString() + ";path=/";
+      }
+
+      function getCookie(name) {
+        const cookieArr = document.cookie.split("; ");
+        for (let i = 0; i < cookieArr.length; i++) {
+          const cookiePair = cookieArr[i].split("=");
+          if (cookiePair[0] === name) {
+            return cookiePair[1];
+          }
+        }
+        return null;
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        cookiesPolicyPrompt();
+      });
+    </script>
+  </body>
+</html>
